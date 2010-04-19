@@ -1,0 +1,170 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>ooo-plugin-test</artifactId>
+	<groupId>net.fmorin.ooo</groupId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>ooo-plugin-test</name>
+	<!--  <url>http://tbd</url>  -->
+	<description>Just a test</description>
+	<inceptionYear>2010</inceptionYear>
+
+	<packaging>jar</packaging>
+
+	<licenses>
+		<license>
+			<name>BSD License</name>
+			<url>http://creativecommons.org/licenses/BSD/</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<build>
+		<directory>target</directory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+			<!--
+				<plugin> <artifactId>maven-source-plugin</artifactId> <executions>
+				<execution> <id>attach-sources</id> <goals> <goal>jar</goal>
+				</goals> </execution> </executions> </plugin>
+			-->
+			<!--
+				<plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId> <executions>
+				<execution> <id>attach-javadocs</id> <goals> <goal>jar</goal>
+				</goals> </execution> </executions> </plugin>
+			-->
+			<plugin>
+				<groupId>org.openoffice.dev</groupId>
+				<artifactId>maven-ooo-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<ooo>${ooffice.app}</ooo>
+					<sdk>${ooffice.sdk}</sdk>
+				</configuration>
+				<executions>
+					<execution>
+						<id>package-oxt</id>
+						<phase>package</phase>
+						<goals>
+							<goal>oxt</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>install-in-ooo</id>
+						<phase>install</phase>
+						<goals>
+							<goal>install</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>build-idl-resources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>build-idl</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/dep.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.openoffice</groupId>
+			<artifactId>juh</artifactId>
+			<version>${ooffice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openoffice</groupId>
+			<artifactId>jurt</artifactId>
+			<version>${ooffice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openoffice</groupId>
+			<artifactId>ridl</artifactId>
+			<version>${ooffice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openoffice</groupId>
+			<artifactId>unoil</artifactId>
+			<version>${ooffice.version}</version>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ooffice.version>3.1.0</ooffice.version>
+		<ooffice.app>C:\Program Files (x86)\OpenOffice.org 3</ooffice.app>
+		<ooffice.sdk>C:\Program Files (x86)\OpenOffice.org 3\Basis\sdk</ooffice.sdk>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>m2eclipse</id>
+			<properties>
+				<targetDir>target-eclipse</targetDir>
+			</properties>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<directory>${targetDir}</directory>
+			</build>
+		</profile>
+	</profiles>
+
+</project>
